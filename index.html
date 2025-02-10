@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VetCare AI - Animal Healthcare & Disease Detection</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Poppins', sans-serif; }
+        .section { display: none; }
+        .section.active { display: block; }
+        .pet-card { transition: transform 0.3s ease; }
+        .pet-card:hover { transform: translateY(-5px); }
+        .hospital-card { transition: all 0.3s ease; }
+        .hospital-card:hover { transform: translateY(-3px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md fixed w-full z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-2">
+                    <i class="bi bi-heart-pulse-fill text-teal-600 text-2xl"></i>
+                    <span class="text-2xl font-bold text-teal-600">VetCare AI</span>
+                </div>
+                <div class="hidden md:flex space-x-6">
+                    <button onclick="showSection('home')" class="nav-link hover:text-teal-600">Home</button>
+                    <button onclick="showSection('disease')" class="nav-link hover:text-teal-600">Disease Detection</button>
+                    <button onclick="showSection('healthcare')" class="nav-link hover:text-teal-600">Healthcare</button>
+                    <button onclick="showSection('veterinary')" class="nav-link hover:text-teal-600">Veterinary</button>
+                    <button onclick="showSection('login')" class="nav-link hover:text-teal-600">Login</button>
+                </div>
+                <button class="md:hidden" onclick="toggleMobileMenu()">
+                    <i class="bi bi-list text-2xl"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="hidden md:hidden bg-white p-4">
+            <div class="flex flex-col space-y-4">
+                <button onclick="showSection('home')" class="nav-link hover:text-teal-600">Home</button>
+                <button onclick="showSection('disease')" class="nav-link hover:text-teal-600">Disease Detection</button>
+                <button onclick="showSection('healthcare')" class="nav-link hover:text-teal-600">Healthcare</button>
+                <button onclick="showSection('veterinary')" class="nav-link hover:text-teal-600">Veterinary</button>
+                <button onclick="showSection('login')" class="nav-link hover:text-teal-600">Login</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-20">
+        <!-- Home Section -->
+        <section id="home" class="section active">
+            <div class="relative h-[70vh] bg-gradient-to-r from-teal-500 to-blue-500">
+                <div class="absolute inset-0 bg-black opacity-50"></div>
+                <div class="container mx-auto px-4 h-full flex items-center justify-center relative">
+                    <div class="text-center text-white">
+                        <h1 class="text-4xl md:text-6xl font-bold mb-4">Revolutionizing Animal Healthcare with AI</h1>
+                        <p class="text-xl mb-8">Caring for Your Pets Like Family</p>
+                        <button onclick="showSection('disease')" class="bg-white text-teal-600 px-8 py-3 rounded-full font-semibold hover:bg-teal-50 transition">Get Started</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features Section -->
+            <div class="container mx-auto px-4 py-16">
+                <h2 class="text-3xl font-bold text-center mb-12">Our Services</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="pet-card bg-white p-6 rounded-lg shadow-md text-center">
+                        <i class="bi bi-search-heart text-4xl text-teal-600 mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2">Disease Detection</h3>
+                        <p class="text-gray-600">AI-powered analysis for early detection of pet health issues</p>
+                    </div>
+                    <div class="pet-card bg-white p-6 rounded-lg shadow-md text-center">
+                        <i class="bi bi-hospital text-4xl text-teal-600 mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2">Veterinary Network</h3>
+                        <p class="text-gray-600">Connect with top veterinary clinics in Mumbai</p>
+                    </div>
+                    <div class="pet-card bg-white p-6 rounded-lg shadow-md text-center">
+                        <i class="bi bi-heart-pulse text-4xl text-teal-600 mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2">Healthcare Guide</h3>
+                        <p class="text-gray-600">Comprehensive pet healthcare resources</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Disease Detection Section -->
+        <section id="disease" class="section container mx-auto px-4 py-8">
+            <h2 class="text-3xl font-bold text-center mb-8">Disease Detection</h2>
+            <div class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md">
+                <div class="mb-6">
+                    <label class="block text-gray-700 mb-2">Upload Pet Image</label>
+                    <input type="file" id="petImage" accept="image/*" class="w-full p-2 border rounded">
+                </div>
+                <div class="mb-6">
+                    <button onclick="captureImage()" class="bg-blue-500 text-white px-4 py-2 rounded mr-2">
+                        <i class="bi bi-camera"></i> Capture
+                    </button>
+                    <button onclick="analyzeImage()" class="bg-teal-600 text-white px-4 py-2 rounded">
+                        <i class="bi bi-search"></i> Analyze Image
+                    </button>
+                </div>
+                <div id="results" class="hidden">
+                    <h3 class="text-xl font-semibold mb-4">Analysis Results</h3>
+                    <div class="bg-gray-50 p-4 rounded">
+                        <p id="diseaseName" class="mb-2"></p>
+                        <p id="description" class="mb-2"></p>
+                        <p id="symptoms" class="mb-2"></p>
+                        <p id="treatment" class="mb-2"></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Healthcare Section -->
+        <section id="healthcare" class="section container mx-auto px-4 py-8">
+            <h2 class="text-3xl font-bold text-center mb-8">Pet Healthcare Guide</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold mb-4">Dogs</h3>
+                    <div class="space-y-4" id="dogHealth"></div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold mb-4">Cats</h3>
+                    <div class="space-y-4" id="catHealth"></div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold mb-4">Rabbits</h3>
+                    <div class="space-y-4" id="rabbitHealth"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Veterinary Section -->
+        <section id="veterinary" class="section container mx-auto px-4 py-8">
+            <h2 class="text-3xl font-bold text-center mb-8">Veterinary Hospitals in Mumbai</h2>
+            <div class="mb-6">
+                <input type="text" id="hospitalSearch" placeholder="Search hospitals..." class="w-full p-3 border rounded-lg" oninput="searchHospitals()">
+            </div>
+            <div id="hospitalList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        </section>
+
+        <!-- Login Section -->
+        <section id="login" class="section container mx-auto px-4 py-8">
+            <div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md">
+                <h2 class="text-3xl font-bold text-center mb-8">Login</h2>
+                <form onsubmit="event.preventDefault(); handleLogin()">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">Email</label>
+                        <input type="email" required class="w-full p-3 border rounded">
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-gray-700 mb-2">Password</label>
+                        <input type="password" required class="w-full p-3 border rounded">
+                    </div>
+                    <button type="submit" class="w-full bg-teal-600 text-white py-3 rounded font-semibold hover:bg-teal-700">
+                        Login
+                    </button>
+                </form>
+                <p class="text-center mt-4">
+                    Don't have an account? 
+                    <button onclick="showSignup()" class="text-teal-600 font-semibold">Sign up</button>
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Navigation
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+            if (window.innerWidth < 768) {
+                document.getElementById('mobileMenu').classList.add('hidden');
+            }
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Disease Detection
+        function captureImage() {
+            // In a real implementation, this would access the device camera
+            alert('Camera functionality would be implemented here');
+        }
+
+        function analyzeImage() {
+            const fileInput = document.getElementById('petImage');
+            if (!fileInput.files.length) {
+                alert('Please upload an image first');
+                return;
+            }
+
+            // Simulate analysis
+            document.getElementById('results').classList.remove('hidden');
+            document.getElementById('diseaseName').textContent = 'Detected: Skin Infection';
+            document.getElementById('description').textContent = 'Description: Bacterial skin infection common in pets';
+            document.getElementById('symptoms').textContent = 'Symptoms: Redness, itching, hair loss';
+            document.getElementById('treatment').textContent = 'Treatment: Antibiotics and medicated shampoo';
+        }
+
+        // Healthcare
+        const healthIssues = {
+            dog: [
+                { q: "What causes dog vomiting?", a: "Common causes include eating too fast, infections, or dietary changes." },
+                { q: "How to treat dog cough?", a: "Rest, humidity, and vet consultation for persistent cough." }
+                // Add more Q&As
+            ],
+            cat: [
+                { q: "Signs of cat flu?", a: "Sneezing, runny eyes, loss of appetite." },
+                { q: "Common cat skin problems?", a: "Fleas, allergies, and fungal infections." }
+                // Add more Q&As
+            ],
+            rabbit: [
+                { q: "Rabbit not eating?", a: "Could be dental issues or GI stasis - seek vet care immediately." },
+                { q: "Signs of rabbit fever?", a: "Lethargy, loss of appetite, high temperature." }
+                // Add more Q&As
+            ]
+        };
+
+        // Populate health sections
+        document.getElementById('dogHealth').innerHTML = healthIssues.dog.map(issue => 
+            `<div class="border-b pb-2">
+                <h4 class="font-semibold">${issue.q}</h4>
+                <p class="text-gray-600">${issue.a}</p>
+            </div>`
+        ).join('');
+
+        document.getElementById('catHealth').innerHTML = healthIssues.cat.map(issue => 
+            `<div class="border-b pb-2">
+                <h4 class="font-semibold">${issue.q}</h4>
+                <p class="text-gray-600">${issue.a}</p>
+            </div>`
+        ).join('');
+
+        document.getElementById('rabbitHealth').innerHTML = healthIssues.rabbit.map(issue => 
+            `<div class="border-b pb-2">
+                <h4 class="font-semibold">${issue.q}</h4>
+                <p class="text-gray-600">${issue.a}</p>
+            </div>`
+        ).join('');
+
+        // Veterinary
+        const hospitals = [
+            { name: "Happy Tails Veterinary Hospital", address: "Andheri West", contact: "022-12345678" },
+            { name: "Pet Care Clinic", address: "Bandra", contact: "022-23456789" },
+            { name: "Animal Aid Hospital", address: "Juhu", contact: "022-34567890" },
+            // Add more hospitals
+        ];
+
+        function displayHospitals(filtered = hospitals) {
+            document.getElementById('hospitalList').innerHTML = filtered.map(hospital => `
+                <div class="hospital-card bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold mb-2">${hospital.name}</h3>
+                    <p class="text-gray-600 mb-2"><i class="bi bi-geo-alt"></i> ${hospital.address}</p>
+                    <p class="text-gray-600"><i class="bi bi-telephone"></i> ${hospital.contact}</p>
+                </div>
+            `).join('');
+        }
+
+        function searchHospitals() {
+            const searchTerm = document.getElementById('hospitalSearch').value.toLowerCase();
+            const filtered = hospitals.filter(hospital => 
+                hospital.name.toLowerCase().includes(searchTerm) || 
+                hospital.address.toLowerCase().includes(searchTerm)
+            );
+            displayHospitals(filtered);
+        }
+
+        // Login
+        function handleLogin() {
+            alert('Login functionality would be implemented here');
+        }
+
+        function showSignup() {
+            alert('Signup functionality would be implemented here');
+        }
+
+        // Initial setup
+        displayHospitals();
+    </script>
+<script>document.body.addEventListener('wheel', e => { if (!e.ctrlKey) return; e.preventDefault(); return }, { passive: false })</script>
+	</body>
+</html>
